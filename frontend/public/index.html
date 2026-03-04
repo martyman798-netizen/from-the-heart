@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>From the Heart – Veldedighet Norge</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+    :root{
+      --bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;
+      --accent:#e8637a;--accent2:#f4a0b0;--text:#e8eaf6;
+      --text-muted:#8b90b0;--border:#2e3250;--card:#1e2133;
+      --green:#43e97b;--yellow:#ffbe3c;--red:#ff6b6b;--purple:#a99eff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+    header{background:linear-gradient(160deg,#1a1020 0%,#120d1e 60%,#0f1117 100%);border-bottom:1px solid var(--border);padding:52px 24px 44px;text-align:center;position:relative;overflow:hidden;}
+    header::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(232,99,122,.14) 0%,transparent 70%);pointer-events:none;}
+    .logo-heart{font-size:50px;line-height:1;filter:drop-shadow(0 0 18px rgba(232,99,122,.65));animation:pulse 2.8s ease-in-out infinite;display:block;margin-bottom:10px;}
+    @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
+    .logo-text{font-family:'Playfair Display',serif;font-size:clamp(30px,6vw,50px);font-weight:700;background:linear-gradient(90deg,#fff 10%,var(--accent2) 60%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+    .logo-tagline{color:var(--text-muted);font-size:14px;max-width:500px;margin:0 auto 30px;line-height:1.65;}
+
+    .hero-cats{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;max-width:720px;margin:0 auto;}
+    .hero-cat{display:flex;align-items:center;gap:6px;padding:9px 17px;border-radius:50px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-muted);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;}
+    .hero-cat:hover,.hero-cat.active{border-color:var(--accent);background:rgba(232,99,122,.13);color:var(--accent2);}
+    .hero-cat.active{font-weight:600;}
+    .pill-count{background:rgba(232,99,122,.2);color:var(--accent);font-size:11px;font-weight:600;padding:1px 7px;border-radius:20px;min-width:20px;text-align:center;}
+
+    .search-section{background:var(--surface2);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .search-wrap{position:relative;flex:1;min-width:180px;max-width:400px;}
+    .search-wrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.4;}
+    .search-wrap input{width:100%;padding:10px 13px 10px 40px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13.5px;outline:none;transition:border-color .2s;font-family:inherit;}
+    .search-wrap input:focus{border-color:var(--accent);}
+    .search-wrap input::placeholder{color:var(--text-muted);}
+    .bar-right{display:flex;align-items:center;gap:12px;}
+    .result-label{color:var(--text-muted);font-size:12.5px;}
+    .result-label b{color:var(--text);}
+    .btn-add{padding:9px 16px;background:linear-gradient(135deg,var(--accent),#c0405a);border:none;border-radius:9px;color:#fff;font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:opacity .2s,transform .15s;font-family:inherit;white-space:nowrap;}
+    .btn-add:hover{opacity:.88;transform:translateY(-1px);}
+
+    main{max-width:1160px;margin:0 auto;padding:28px 18px 60px;}
+    .disclaimer{background:rgba(255,190,60,.07);border:1px solid rgba(255,190,60,.25);border-radius:10px;padding:13px 16px;margin-bottom:20px;font-size:12.5px;color:#ffda80;line-height:1.6;}
+    .disclaimer b{color:var(--yellow);}
+    .section-heading{font-size:12.5px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+    .section-heading::after{content:'';flex:1;height:1px;background:var(--border);}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
+
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .22s;position:relative;overflow:hidden;}
+    .card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity .22s;}
+    .card:hover{background:#252a40;border-color:rgba(232,99,122,.35);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.3);}
+    .card:hover::after{opacity:1;}
+
+    .rank-badge{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+    .rank-1{background:rgba(255,215,0,.2);color:#ffd700;border:1px solid rgba(255,215,0,.4);}
+    .rank-2{background:rgba(192,192,192,.2);color:#c0c0c0;border:1px solid rgba(192,192,192,.35);}
+    .rank-3{background:rgba(205,127,50,.2);color:#cd7f32;border:1px solid rgba(205,127,50,.35);}
+    .rank-other{background:rgba(255,255,255,.05);color:var(--text-muted);border:1px solid var(--border);}
+
+    .card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+    .card-logo{width:44px;height:44px;border-radius:11px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;}
+    .card-name{font-size:15px;font-weight:600;margin-bottom:4px;padding-right:36px;line-height:1.3;}
+    .cat-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10.5px;font-weight:500;}
+    .tag-helse{background:rgba(67,233,123,.12);color:#43e97b;}
+    .tag-humanitaer{background:rgba(255,107,107,.12);color:#ff6b6b;}
+    .tag-miljoe{background:rgba(72,209,204,.12);color:#48d1cc;}
+    .tag-barn{background:rgba(255,190,60,.12);color:#ffbe3c;}
+    .tag-dyr{background:rgba(200,150,255,.12);color:#c896ff;}
+    .tag-sosial{background:rgba(232,99,122,.12);color:var(--accent2);}
+    .tag-annet{background:rgba(180,180,180,.1);color:#aaa;}
+
+    .card-desc{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:14px;}
+
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+    .stat-box{background:var(--surface2);border-radius:8px;padding:8px 6px;text-align:center;}
+    .stat-val{font-size:16px;font-weight:700;display:block;margin-bottom:2px;}
+    .stat-lbl{font-size:9.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;}
+    .val-green{color:var(--green);}
+    .val-yellow{color:var(--yellow);}
+    .val-red{color:var(--red);}
+
+    .score-bar-wrap{margin-bottom:12px;}
+    .score-bar-label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-bottom:5px;}
+    .score-bar-label b{color:var(--text);}
+    .score-bar-bg{height:6px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+    .score-bar-fill{height:100%;border-radius:4px;}
+
+    .verdict{border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.55;margin-bottom:14px;}
+    .verdict-good{background:rgba(67,233,123,.08);border:1px solid rgba(67,233,123,.2);color:#a8f5c8;}
+    .verdict-ok{background:rgba(255,190,60,.07);border:1px solid rgba(255,190,60,.2);color:#ffdfa0;}
+    .verdict-warn{background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.2);color:#ffb3b3;}
+
+    .card-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:2px;}
+    .innsamling-ok{font-size:11px;color:var(--green);}
+    .innsamling-no{font-size:11px;color:#ff9966;}
+    .card-link{font-size:12.5px;color:var(--accent);text-decoration:none;font-weight:500;}
+    .card-link:hover{text-decoration:underline;}
+    .btn-sources{background:rgba(108,99,255,.12);border:1px solid rgba(108,99,255,.3);color:var(--purple);border-radius:6px;padding:5px 11px;font-size:11.5px;cursor:pointer;font-family:inherit;transition:background .2s;}
+    .btn-sources:hover{background:rgba(108,99,255,.25);}
+
+    .no-results{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);}
+    .no-results span{font-size:40px;display:block;margin-bottom:12px;}
+
+    /* MODALS */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);z-index:100;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.open{display:flex;}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:30px;width:100%;max-width:480px;position:relative;animation:slideUp .25s ease;}
+    @keyframes slideUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+    .modal h2{font-size:19px;font-weight:700;margin-bottom:4px;}
+    .modal-sub{color:var(--text-muted);font-size:13px;margin-bottom:20px;}
+    .modal-close{position:absolute;top:13px;right:13px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);width:30px;height:30px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .modal-close:hover{background:#252a40;}
+    .form-group{margin-bottom:13px;}
+    .form-group label{display:block;font-size:12px;font-weight:500;color:var(--text-muted);margin-bottom:5px;}
+    .form-group input,.form-group select,.form-group textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13.5px;padding:9px 11px;outline:none;font-family:inherit;transition:border-color .2s;}
+    .form-group textarea{resize:vertical;min-height:72px;}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent);}
+    .form-group select option{background:var(--surface);}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+    .btn-submit{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),#c0405a);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:5px;transition:opacity .2s,transform .15s;}
+    .btn-submit:hover{opacity:.9;transform:translateY(-1px);}
+    .btn-close-secondary{width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;margin-top:10px;}
+    .btn-close-secondary:hover{background:#252a40;}
+
+    .source-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;display:flex;align-items:center;gap:10px;}
+    .source-item a{color:var(--accent);font-size:13.5px;font-weight:500;text-decoration:none;flex:1;}
+    .source-item a:hover{text-decoration:underline;}
+    .source-item .src-icon{font-size:16px;flex-shrink:0;}
+
+    .toast{position:fixed;bottom:22px;right:22px;background:var(--green);color:#000;padding:11px 18px;border-radius:10px;font-weight:600;font-size:13px;opacity:0;transform:translateY(10px);transition:all .3s;z-index:200;pointer-events:none;}
+    .toast.show{opacity:1;transform:translateY(0);}
+
+    footer{text-align:center;padding:20px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--border);}
+    footer a{color:var(--accent);text-decoration:none;}
+    @media(max-width:580px){.form-row{grid-template-columns:1fr;}.search-section{flex-direction:column;align-items:stretch;}.bar-right{justify-content:space-between;}}
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo-heart">&#10084;&#65039;</span>
+  <div class="logo-text">From the Heart</div>
+  <p class="logo-tagline">Rangeringer og vurderinger av norske veldedighetsorganisasjoner – gi der det faktisk teller.</p>
+  <div class="hero-cats" id="hero-cats">
+    <div class="hero-cat active" data-cat="alle">&#127760; Alle <span class="pill-count" id="cnt-alle">0</span></div>
+    <div class="hero-cat" data-cat="humanitaer">&#127757; Humanitær <span class="pill-count" id="cnt-humanitaer">0</span></div>
+    <div class="hero-cat" data-cat="barn">&#129489; Barn <span class="pill-count" id="cnt-barn">0</span></div>
+    <div class="hero-cat" data-cat="helse">&#9877;&#65039; Helse <span class="pill-count" id="cnt-helse">0</span></div>
+    <div class="hero-cat" data-cat="miljoe">&#127807; Miljø <span class="pill-count" id="cnt-miljoe">0</span></div>
+    <div class="hero-cat" data-cat="dyr">&#128062; Dyr <span class="pill-count" id="cnt-dyr">0</span></div>
+    <div class="hero-cat" data-cat="sosial">&#10084;&#65039; Sosial <span class="pill-count" id="cnt-sosial">0</span></div>
+  </div>
+</header>
+
+<div class="search-section">
+  <div class="search-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+    <input type="text" id="search-input" placeholder="Søk etter organisasjon..."/>
+  </div>
+  <div class="bar-right">
+    <span class="result-label">Viser <b id="visible-count">0</b> org.</span>
+    <span id="last-updated" style="font-size:11px;color:var(--text-muted);"></span>
+    <button class="btn-add" onclick="openModal()">+ Legg til</button>
+  </div>
+</div>
+
+<main>
+  <div class="disclaimer">
+    <b>&#9888;&#65039; Om rangeringene:</b> Prosentene er hentet fra organisasjonenes egne årsrapporter, Innsamlingskontrollen og offentlige kilder. Rangeringen er basert på andel til formål, åpenhet og dokumentert effekt. Klikk "Kilder" på hvert kort for å se grunnlaget.
+  </div>
+  <div class="section-heading" id="section-label">Alle organisasjoner</div>
+  <div class="grid" id="org-grid"></div>
+</main>
+
+<!-- LEGG TIL MODAL -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAddModal()">&#10005;</button>
+    <h2>Legg til organisasjon</h2>
+    <p class="modal-sub">Fyll ut skjemaet for å legge til en ny organisasjon.</p>
+    <form id="add-form" onsubmit="addOrg(event)">
+      <div class="form-row">
+        <div class="form-group"><label>Navn *</label><input type="text" id="f-name" placeholder="Org. navn" required/></div>
+        <div class="form-group"><label>Emoji</label><input type="text" id="f-emoji" placeholder="🌍" maxlength="2"/></div>
+      </div>
+      <div class="form-group"><label>Kategori *</label>
+        <select id="f-cat" required>
+          <option value="">Velg kategori</option>
+          <option value="humanitaer">Humanitær</option>
+          <option value="helse">Helse</option>
+          <option value="barn">Barn</option>
+          <option value="miljoe">Miljø</option>
+          <option value="dyr">Dyr</option>
+          <option value="sosial">Sosial</option>
+          <option value="annet">Annet</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Beskrivelse *</label><textarea id="f-desc" placeholder="Hva gjør organisasjonen?" required></textarea></div>
+      <div class="form-group"><label>Nettside</label><input type="url" id="f-url" placeholder="https://www.eksempel.no"/></div>
+      <button type="submit" class="btn-submit">Legg til organisasjon</button>
+    </form>
+  </div>
+</div>
+
+<!-- KILDER MODAL -->
+<div class="modal-overlay" id="sources-modal">
+  <div class="modal" style="max-width:500px;">
+    <button class="modal-close" onclick="closeSourcesModal()">&#10005;</button>
+    <h2 id="sources-title" style="margin-bottom:6px;">Kilder</h2>
+    <p class="modal-sub" id="sources-sub">Disse kildene er brukt i evalueringen.</p>
+    <div id="sources-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+    <button class="btn-close-secondary" onclick="closeSourcesModal()">Lukk</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">&#10003; Organisasjon lagt til!</div>
+
+<footer>
+  Basert på <a href="https://www.innsamlingskontrollen.no" target="_blank">Innsamlingskontrollen</a>,
+  <a href="https://gieffektivt.no" target="_blank">Gi Effektivt</a> og organisasjonenes egne årsrapporter.
+  Ikke tilknyttet noen av organisasjonene.
+</footer>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+
+var catLabels = {
+  humanitaer: "Humanitær", helse: "Helse", barn: "Barn",
+  miljoe: "Miljø", dyr: "Dyr", sosial: "Sosial", annet: "Annet"
+};
+
+var sectionNames = {
+  alle: "Alle organisasjoner",
+  humanitaer: "Humanitære organisasjoner",
+  helse: "Helseorganisasjoner",
+  barn: "Barneorganisasjoner",
+  miljoe: "Miljøorganisasjoner",
+  dyr: "Dyrevernorganisasjoner",
+  sosial: "Sosiale organisasjoner"
+};
+
+var orgs = [
+  // ── HUMANITÆR ──
+  {
+    id: 1, name: "Røde Kors Norge", emoji: "🔴", cat: "humanitaer", rank: 1,
+    desc: "Verdens største humanitære nettverk. Hjelper mennesker i krise – nasjonalt og internasjonalt.",
+    til_formal: 90, admin: 4, score: 88, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Svært godt. Over 90 % av midlene går til formålet og kun 4 % til administrasjon (årsrapport 2023). Stor og veldokumentert effekt både i Norge og internasjonalt. Godkjent av Innsamlingskontrollen.",
+    url: "https://www.rodekors.no",
+    sources: [
+      {icon: "📄", title: "Røde Kors Årsrapport 2023", url: "https://www.rodekors.no/globalassets/_rapporter/_arsrapporter-rode-kors/2023_rk_arsrapport_no_versjon2.pdf"},
+      {icon: "✅", title: "Innsamlingskontrollen – godkjenning", url: "https://www.innsamlingskontrollen.no"},
+      {icon: "🏛️", title: "Skatteetaten – gavefradragsliste", url: "https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/gave-og-arv/gave-til-frivillige-organisasjoner/liste/"}
+    ]
+  },
+  {
+    id: 2, name: "Flyktninghjelpen", emoji: "🌍", cat: "humanitaer", rank: 2,
+    desc: "Beskytter rettighetene til flyktninger og internt fordrevne over hele verden.",
+    til_formal: 88, admin: 5, score: 84, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Meget bra. Ca. 88 % til formålet og høy åpenhet med god effektdokumentasjon. En av Norges mest effektive internasjonale organisasjoner.",
+    url: "https://www.flyktninghjelpen.no",
+    sources: [
+      {icon: "📄", title: "Flyktninghjelpen årsrapport", url: "https://www.flyktninghjelpen.no/om-flyktninghjelpen/rapporter/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"},
+      {icon: "🔍", title: "Gi Effektivt – vurdering", url: "https://gieffektivt.no"}
+    ]
+  },
+  {
+    id: 3, name: "Norsk Folkehjelp", emoji: "🤲", cat: "humanitaer", rank: 3,
+    desc: "Solidaritetsorganisasjon som driver humanitært arbeid og bistand globalt.",
+    til_formal: 82, admin: 7, score: 78, åpenhet: "B", innsamling: true,
+    verdict_type: "good",
+    verdict: "Bra. Solid formålsandel på 82 %, men noe høyere administrasjon enn de beste. God åpenhet og veldokumentert arbeid med minerydding og nødhjelp.",
+    url: "https://www.folkehjelp.no",
+    sources: [
+      {icon: "📄", title: "Norsk Folkehjelp årsrapport", url: "https://www.folkehjelp.no/om-oss/rapporter/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 4, name: "Kirkens Nødhjelp", emoji: "✝️", cat: "humanitaer", rank: 4,
+    desc: "Kristen hjelpeorganisasjon som bekjemper fattigdom og urettferdighet globalt.",
+    til_formal: 80, admin: 8, score: 75, åpenhet: "B", innsamling: true,
+    verdict_type: "ok",
+    verdict: "OK. Rundt 80 % til formålet. Noe kritikk for organisatoriske kostnader, men generelt solid og godkjent av Innsamlingskontrollen.",
+    url: "https://www.kirkensnodhjelp.no",
+    sources: [
+      {icon: "📄", title: "Kirkens Nødhjelp årsrapport", url: "https://www.kirkensnodhjelp.no/om-oss/styring-og-kontroll/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 5, name: "Amnesty International Norge", emoji: "🕯️", cat: "humanitaer", rank: 5,
+    desc: "Forsvarer menneskerettigheter globalt gjennom kampanjer, forskning og aktivisme.",
+    til_formal: 72, admin: 12, score: 68, åpenhet: "B", innsamling: true,
+    verdict_type: "ok",
+    verdict: "Moderat. Ca. 72 % til formålet – noe lavere enn ideelt. Mye av arbeidet er lobbyvirksomhet og kampanjer som er vanskelig å måle direkte. God åpenhet.",
+    url: "https://www.amnesty.no",
+    sources: [
+      {icon: "📄", title: "Amnesty Norge årsrapport", url: "https://www.amnesty.no/om-amnesty/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 6, name: "CARE Norge", emoji: "📦", cat: "humanitaer", rank: 6,
+    desc: "Bekjemper fattigdom og fremmer likestilling – særlig fokus på kvinner og jenter.",
+    til_formal: 76, admin: 10, score: 70, åpenhet: "B", innsamling: true,
+    verdict_type: "ok",
+    verdict: "OK. 76 % til formålet. Seriøs og godkjent organisasjon, men etterlyser tydeligere effektrapportering på norsk.",
+    url: "https://www.care.no",
+    sources: [
+      {icon: "📄", title: "CARE Norge årsrapport", url: "https://www.care.no/om-care/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 7, name: "Strømmestiftelsen", emoji: "💧", cat: "humanitaer", rank: 7,
+    desc: "Norsk utviklingsorganisasjon som arbeider med bærekraftig utvikling i fattige land.",
+    til_formal: 78, admin: 9, score: 72, åpenhet: "B", innsamling: true,
+    verdict_type: "ok",
+    verdict: "OK. Ca. 78 % til formålet. Godkjent av Innsamlingskontrollen, men effektdokumentasjonen per krone kunne vært tydeligere.",
+    url: "https://www.strommestiftelsen.no",
+    sources: [
+      {icon: "📄", title: "Strømmestiftelsen årsrapport", url: "https://www.strommestiftelsen.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+
+  // ── BARN ──
+  {
+    id: 8, name: "UNICEF Norge", emoji: "🧒", cat: "barn", rank: 1,
+    desc: "Arbeider for barns rettigheter og velferd i over 190 land.",
+    til_formal: 87, admin: 5, score: 86, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Svært godt. 87 % til formålet. Del av globalt nettverk med sterk åpenhet og systematisk effektdokumentasjon. En av de mest pålitelige organisasjonene.",
+    url: "https://www.unicef.no",
+    sources: [
+      {icon: "📄", title: "UNICEF Norge årsrapport", url: "https://www.unicef.no/om-unicef/arsrapport/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"},
+      {icon: "🔍", title: "Gi Effektivt – toppliste", url: "https://gieffektivt.no/topplista"}
+    ]
+  },
+  {
+    id: 9, name: "Redd Barna Norge", emoji: "🤝", cat: "barn", rank: 2,
+    desc: "Kjemper for barns rettigheter og mot fattigdom, vold og diskriminering.",
+    til_formal: 83, admin: 7, score: 80, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Meget bra. Over 83 % til formålet og lave administrasjonskostnader. Publiserer grundige resultatrapporter. Anbefalt.",
+    url: "https://www.reddbarna.no",
+    sources: [
+      {icon: "📄", title: "Redd Barna årsrapport", url: "https://www.reddbarna.no/om-redd-barna/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 10, name: "SOS Barnebyer Norge", emoji: "🏠", cat: "barn", rank: 3,
+    desc: "Gir foreldreløse og sårbare barn et trygt hjem og en meningsfull fremtid.",
+    til_formal: 79, admin: 9, score: 74, åpenhet: "B", innsamling: true,
+    verdict_type: "ok",
+    verdict: "OK. Ca. 79 % til formålet. Noe kritikk for at fadderpenger ikke alltid øremerkes ett spesifikt barn. Godkjent og seriøs.",
+    url: "https://www.sos-barnebyer.no",
+    sources: [
+      {icon: "📄", title: "SOS Barnebyer årsrapport", url: "https://www.sos-barnebyer.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 11, name: "Plan International Norge", emoji: "🌐", cat: "barn", rank: 4,
+    desc: "Kjemper for barns rettigheter og likestilling – særlig jenters rettigheter.",
+    til_formal: 77, admin: 10, score: 71, åpenhet: "B", innsamling: true,
+    verdict_type: "ok",
+    verdict: "OK. Ca. 77 % til formålet. Solid organisasjon, men innsamlingskostnadene er noe høye. God åpenhet.",
+    url: "https://www.plan-norge.no",
+    sources: [
+      {icon: "📄", title: "Plan International årsrapport", url: "https://www.plan-norge.no/om-plan/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+
+  // ── HELSE ──
+  {
+    id: 12, name: "Norsk Luftambulanse", emoji: "🚁", cat: "helse", rank: 1,
+    desc: "Driver luftambulanse og akuttmedisin for å redde liv i kritiske situasjoner.",
+    til_formal: 91, admin: 3, score: 90, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Topp. 91 % til formålet og kun 3 % administrasjon. Målbar effekt med dokumentert antall reddede liv hvert år. En av Norges aller mest tillitsfulle innsamlingsorganisasjoner.",
+    url: "https://www.norskluftambulanse.no",
+    sources: [
+      {icon: "📄", title: "Norsk Luftambulanse årsrapport", url: "https://www.norskluftambulanse.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"},
+      {icon: "🏛️", title: "Skatteetaten – gavefradragsliste", url: "https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/gave-og-arv/gave-til-frivillige-organisasjoner/liste/"}
+    ]
+  },
+  {
+    id: 13, name: "Leger Uten Grenser", emoji: "⚕️", cat: "helse", rank: 2,
+    desc: "Gir medisinsk nødhjelp til ofre for konflikter, epidemier og naturkatastrofer.",
+    til_formal: 86, admin: 5, score: 85, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Svært godt. 86 % til formålet. Globalt anerkjent med svært høy åpenhet – publiserer detaljerte felt- og finansrapporter. Uavhengig fra myndigheter og næringslivet.",
+    url: "https://www.legerutengrenser.no",
+    sources: [
+      {icon: "📄", title: "Leger Uten Grenser årsrapport", url: "https://www.legerutengrenser.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"},
+      {icon: "🔍", title: "Gi Effektivt", url: "https://gieffektivt.no"}
+    ]
+  },
+  {
+    id: 14, name: "Kreftforeningen", emoji: "🎗️", cat: "helse", rank: 3,
+    desc: "Norges største frivillige kreftorganisasjon – forskning, støtte og forebygging.",
+    til_formal: 85, admin: 6, score: 83, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Svært godt. 85 % til formålet. Finansierer konkret forskning og pasientstøtte. Høy åpenhet med detaljerte årsrapporter og god historikk.",
+    url: "https://www.kreftforeningen.no",
+    sources: [
+      {icon: "📄", title: "Kreftforeningen årsrapport", url: "https://www.kreftforeningen.no/om-kreftforeningen/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 15, name: "Mental Helse", emoji: "🧠", cat: "helse", rank: 4,
+    desc: "Arbeider for økt åpenhet om psykisk helse og bedre helsetilbud i Norge.",
+    til_formal: 74, admin: 11, score: 65, åpenhet: "B", innsamling: false,
+    verdict_type: "ok",
+    verdict: "Moderat. Ca. 74 % til formålet. Drevet mye på offentlige tilskudd. Viktig samfunnsarbeid, men begrenset uavhengig effektdokumentasjon av innsamlede midler spesifikt.",
+    url: "https://www.mentalhelse.no",
+    sources: [
+      {icon: "📄", title: "Mental Helse årsrapport", url: "https://www.mentalhelse.no/om-oss/"},
+      {icon: "🏛️", title: "Skatteetaten – gavefradragsliste", url: "https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/gave-og-arv/gave-til-frivillige-organisasjoner/liste/"}
+    ]
+  },
+
+  // ── MILJØ ──
+  {
+    id: 16, name: "Norges Naturvernforbund", emoji: "🌿", cat: "miljoe", rank: 1,
+    desc: "Norges eldste natur- og miljøvernorganisasjon, grunnlagt i 1914.",
+    til_formal: 84, admin: 7, score: 80, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Meget bra. 84 % til formålet. Lang og dokumentert historikk med politisk påvirkningsarbeid. God åpenhet og jevnlig effektrapportering.",
+    url: "https://www.naturvernforbundet.no",
+    sources: [
+      {icon: "📄", title: "Naturvernforbundet årsrapport", url: "https://www.naturvernforbundet.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 17, name: "WWF Norge", emoji: "🐼", cat: "miljoe", rank: 2,
+    desc: "Jobber for å bevare naturmangfoldet og sikre en bærekraftig fremtid for planeten.",
+    til_formal: 82, admin: 8, score: 77, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Bra. 82 % til formålet. Globalt nettverk med stor effekt og god åpenhet. Noe historisk kritikk for næringslivssamarbeid, men generelt solid.",
+    url: "https://www.wwf.no",
+    sources: [
+      {icon: "📄", title: "WWF Norge årsrapport", url: "https://www.wwf.no/om-wwf/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 18, name: "Bellona", emoji: "☀️", cat: "miljoe", rank: 3,
+    desc: "Miljøstiftelse som jobber med klimaløsninger – særlig karbonfangst og ren energi.",
+    til_formal: 78, admin: 10, score: 72, åpenhet: "B", innsamling: false,
+    verdict_type: "ok",
+    verdict: "Moderat. Finansieres delvis av næringslivet, noe som kan påvirke uavhengigheten. Ikke godkjent av Innsamlingskontrollen. Viktig teknologifokus, men svakere åpenhet om donasjonsbruk.",
+    url: "https://www.bellona.no",
+    sources: [
+      {icon: "📄", title: "Bellona årsrapport", url: "https://www.bellona.no/om-bellona/"},
+      {icon: "⚠️", title: "Ikke godkjent av Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 19, name: "Greenpeace Norge", emoji: "🌊", cat: "miljoe", rank: 4,
+    desc: "Internasjonal miljøorganisasjon som bekjemper klimaendringer og miljøødeleggelser.",
+    til_formal: 76, admin: 11, score: 68, åpenhet: "B", innsamling: false,
+    verdict_type: "ok",
+    verdict: "Moderat. Ikke med i Innsamlingskontrollen. Aksjonistisk profil – mye ressurser til kampanjer. Global åpenhet er god, men norsk andel til direkte formål er vanskeligere å spore.",
+    url: "https://www.greenpeace.org/norway",
+    sources: [
+      {icon: "📄", title: "Greenpeace International årsrapport", url: "https://www.greenpeace.org/international/publication/"},
+      {icon: "⚠️", title: "Ikke godkjent av Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+
+  // ── DYR ──
+  {
+    id: 20, name: "Dyrebeskyttelsen Norge", emoji: "🐾", cat: "dyr", rank: 1,
+    desc: "Norges eldste dyrevernorganisasjon – kjemper for alle dyrs rettigheter og velferd.",
+    til_formal: 81, admin: 8, score: 77, åpenhet: "B", innsamling: true,
+    verdict_type: "good",
+    verdict: "Bra. 81 % til formålet. Godt dokumentert arbeid med konkrete resultater (antall dyr hjulpet, internat osv.). Godkjent av Innsamlingskontrollen.",
+    url: "https://www.dyrebeskyttelsen.no",
+    sources: [
+      {icon: "📄", title: "Dyrebeskyttelsen årsrapport", url: "https://www.dyrebeskyttelsen.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 21, name: "NOAH – for dyrs rettigheter", emoji: "🐇", cat: "dyr", rank: 2,
+    desc: "Jobber aktivt mot dyremishandling og fremmer dyrs interesser juridisk og politisk.",
+    til_formal: 75, admin: 12, score: 65, åpenhet: "B", innsamling: false,
+    verdict_type: "ok",
+    verdict: "Moderat. Ca. 75 % til formålet. Mye ressurser til kampanjer og lobbyarbeid. Ikke del av Innsamlingskontrollen. Viktig arbeid, men effektdokumentasjon per donasjonskrone er begrenset.",
+    url: "https://www.dyrsrettigheter.no",
+    sources: [
+      {icon: "📄", title: "NOAH årsrapport", url: "https://www.dyrsrettigheter.no/om-noah/"},
+      {icon: "⚠️", title: "Ikke godkjent av Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+
+  // ── SOSIAL ──
+  {
+    id: 22, name: "Kirkens Bymisjon", emoji: "❤️", cat: "sosial", rank: 1,
+    desc: "Hjelper marginaliserte og sårbare mennesker i norske byer med omsorg og fellesskap.",
+    til_formal: 85, admin: 6, score: 82, åpenhet: "A", innsamling: true,
+    verdict_type: "good",
+    verdict: "Svært godt. 85 % til formålet. Tydelig og veldokumentert effekt med konkrete tall på antall hjulpne (rusomsorgen, krisesenter m.fl.). Høy tillit.",
+    url: "https://www.bymisjon.no",
+    sources: [
+      {icon: "📄", title: "Kirkens Bymisjon årsrapport", url: "https://www.bymisjon.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 23, name: "Frelsesarmeen Norge", emoji: "🎺", cat: "sosial", rank: 2,
+    desc: "Kristen hjelpeorganisasjon med fokus på fattigdomsbekjempelse og sosial rettferdighet.",
+    til_formal: 80, admin: 9, score: 74, åpenhet: "B", innsamling: true,
+    verdict_type: "good",
+    verdict: "Bra. 80 % til formålet. Lang historikk og bred tilstedeværelse i Norge. God effektrapportering.",
+    url: "https://www.frelsesarmeen.no",
+    sources: [
+      {icon: "📄", title: "Frelsesarmeen årsrapport", url: "https://www.frelsesarmeen.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  },
+  {
+    id: 24, name: "Blå Kors Norge", emoji: "💙", cat: "sosial", rank: 3,
+    desc: "Hjelper mennesker rammet av rusproblemer og avhengighet til et bedre liv.",
+    til_formal: 77, admin: 10, score: 70, åpenhet: "B", innsamling: true,
+    verdict_type: "ok",
+    verdict: "OK. 77 % til formålet. Seriøs organisasjon med viktig formål. Mye finansiert via offentlige tilskudd, noe som gjør donasjonsbruken vanskeligere å isolere.",
+    url: "https://www.blakors.no",
+    sources: [
+      {icon: "📄", title: "Blå Kors årsrapport", url: "https://www.blakors.no/om-oss/"},
+      {icon: "✅", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"}
+    ]
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+
+var activeFilter = "alle";
+var searchQuery = "";
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+
+function formalColor(p) { return p >= 85 ? "val-green" : p >= 75 ? "val-yellow" : "val-red"; }
+function adminColor(p)  { return p <= 6  ? "val-green" : p <= 10  ? "val-yellow" : "val-red"; }
+function åpenhetColor(a){ return a === "A" ? "val-green" : a === "B" ? "val-yellow" : "val-red"; }
+function barColor(s)    { return s >= 80  ? "#43e97b"  : s >= 65   ? "#ffbe3c"   : "#ff6b6b"; }
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+
+function updateCounts() {
+  var cats = ["alle","humanitaer","barn","helse","miljoe","dyr","sosial"];
+  for (var i = 0; i < cats.length; i++) {
+    var c = cats[i];
+    var el = document.getElementById("cnt-" + c);
+    if (el) el.textContent = (c === "alle") ? orgs.length : orgs.filter(function(o){ return o.cat === c; }).length;
+  }
+}
+
+function render() {
+  var grid = document.getElementById("org-grid");
+  var filtered = orgs.filter(function(o) {
+    var matchCat  = activeFilter === "alle" || o.cat === activeFilter;
+    var matchQ    = !searchQuery || o.name.toLowerCase().indexOf(searchQuery) > -1 || o.desc.toLowerCase().indexOf(searchQuery) > -1;
+    return matchCat && matchQ;
+  });
+
+  if (activeFilter !== "alle") {
+    filtered.sort(function(a, b){ return (a.rank || 99) - (b.rank || 99); });
+  } else {
+    filtered.sort(function(a, b){ return (b.score || 0) - (a.score || 0); });
+  }
+
+  document.getElementById("visible-count").textContent = filtered.length;
+  document.getElementById("section-label").textContent = sectionNames[activeFilter] || "Alle organisasjoner";
+  updateCounts();
+
+  if (!filtered.length) {
+    grid.innerHTML = "<div class=\"no-results\"><span>&#128269;</span>Ingen organisasjoner funnet.</div>";
+    return;
+  }
+
+  var html = "";
+  for (var i = 0; i < filtered.length; i++) {
+    var o = filtered[i];
+    var rank = o.rank || "";
+    var rankClass = rank === 1 ? "rank-1" : rank === 2 ? "rank-2" : rank === 3 ? "rank-3" : "rank-other";
+    var formalVal = o.til_formal != null ? o.til_formal + "%" : "N/A";
+    var adminVal  = o.admin != null ? o.admin + "%" : "N/A";
+    var scoreVal  = o.score != null ? o.score : "?";
+    var aap       = o.åpenhet || "B";
+    var innBadge  = o.innsamling
+      ? "<span class=\"innsamling-ok\">&#10003; Innsamlingskontroll</span>"
+      : "<span class=\"innsamling-no\">&#9888; Ikke godkjent</span>";
+    var linkHtml  = o.url ? "<a class=\"card-link\" href=\"" + o.url + "\" target=\"_blank\" rel=\"noopener\">Besøk &#8594;</a>" : "";
+
+    html += "<div class=\"card\">";
+    html += "<div class=\"rank-badge " + rankClass + "\">" + rank + "</div>";
+    html += "<div class=\"card-top\">";
+    html += "<div class=\"card-logo\">" + o.emoji + "</div>";
+    html += "<div><div class=\"card-name\">" + o.name + "</div>";
+    html += "<span class=\"cat-tag tag-" + o.cat + "\">" + (catLabels[o.cat] || "Annet") + "</span></div></div>";
+    html += "<p class=\"card-desc\">" + o.desc + "</p>";
+    html += "<div class=\"stats-row\">";
+    html += "<div class=\"stat-box\"><span class=\"stat-val " + formalColor(o.til_formal || 0) + "\">" + formalVal + "</span><span class=\"stat-lbl\">Til formål</span></div>";
+    html += "<div class=\"stat-box\"><span class=\"stat-val " + adminColor(o.admin || 99) + "\">" + adminVal + "</span><span class=\"stat-lbl\">Adm. kost.</span></div>";
+    html += "<div class=\"stat-box\"><span class=\"stat-val " + åpenhetColor(aap) + "\">" + aap + "</span><span class=\"stat-lbl\">Åpenhet</span></div>";
+    html += "</div>";
+    html += "<div class=\"score-bar-wrap\">";
+    html += "<div class=\"score-bar-label\"><span>Samlet score</span><b>" + scoreVal + "/100</b></div>";
+    html += "<div class=\"score-bar-bg\"><div class=\"score-bar-fill\" style=\"width:" + scoreVal + "%;background:" + barColor(o.score || 0) + ";\"></div></div>";
+    html += "</div>";
+    html += "<div class=\"verdict verdict-" + (o.verdict_type || "ok") + "\">" + o.verdict + "</div>";
+    html += "<div class=\"card-footer\">" + innBadge;
+    html += "<button class=\"btn-sources\" data-id=\"" + o.id + "\">&#128196; Kilder</button>";
+    html += linkHtml + "</div>";
+    html += "</div>";
+  }
+  grid.innerHTML = html;
+
+  // Attach source button events after render
+  var btns = document.querySelectorAll(".btn-sources");
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].addEventListener("click", function() {
+      var id = parseInt(this.getAttribute("data-id"));
+      openSourcesModal(id);
+    });
+  }
+}
+
+// ── SOURCES MODAL ─────────────────────────────────────────────────────────────
+
+function openSourcesModal(id) {
+  var org = null;
+  for (var i = 0; i < orgs.length; i++) {
+    if (orgs[i].id === id) { org = orgs[i]; break; }
+  }
+  if (!org) return;
+
+  document.getElementById("sources-title").textContent = "Kilder: " + org.name;
+  document.getElementById("sources-sub").textContent = "Disse kildene er brukt i evalueringen av denne organisasjonen.";
+
+  var list = document.getElementById("sources-list");
+  var html = "";
+  var sources = org.sources || [];
+  for (var i = 0; i < sources.length; i++) {
+    var s = sources[i];
+    html += "<div class=\"source-item\">";
+    html += "<span class=\"src-icon\">" + (s.icon || "📄") + "</span>";
+    html += "<a href=\"" + s.url + "\" target=\"_blank\" rel=\"noopener\">" + s.title + "</a>";
+    html += "</div>";
+  }
+  list.innerHTML = html;
+  document.getElementById("sources-modal").classList.add("open");
+}
+
+function closeSourcesModal() {
+  document.getElementById("sources-modal").classList.remove("open");
+}
+
+document.getElementById("sources-modal").addEventListener("click", function(e) {
+  if (e.target === this) closeSourcesModal();
+});
+
+// ── ADD MODAL ─────────────────────────────────────────────────────────────────
+
+function openModal() { document.getElementById("add-modal").classList.add("open"); }
+
+function closeAddModal() {
+  document.getElementById("add-modal").classList.remove("open");
+  document.getElementById("add-form").reset();
+}
+
+document.getElementById("add-modal").addEventListener("click", function(e) {
+  if (e.target === this) closeAddModal();
+});
+
+function addOrg(e) {
+  e.preventDefault();
+  var newId = orgs.length > 0 ? Math.max.apply(null, orgs.map(function(o){ return o.id; })) + 1 : 1;
+  var o = {
+    id: newId,
+    name: document.getElementById("f-name").value.trim(),
+    emoji: document.getElementById("f-emoji").value.trim() || "🌍",
+    cat: document.getElementById("f-cat").value,
+    desc: document.getElementById("f-desc").value.trim(),
+    url: document.getElementById("f-url").value.trim(),
+    til_formal: null, admin: null, score: null, åpenhet: "B", innsamling: false,
+    rank: 99, verdict_type: "ok",
+    verdict: "Lagt til manuelt – data ikke verifisert ennå.",
+    sources: [
+      {icon: "🔍", title: "Innsamlingskontrollen", url: "https://www.innsamlingskontrollen.no"},
+      {icon: "🏛️", title: "Skatteetaten – godkjente org.", url: "https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/gave-og-arv/gave-til-frivillige-organisasjoner/liste/"}
+    ]
+  };
+  orgs.unshift(o);
+  closeAddModal();
+  render();
+  var t = document.getElementById("toast");
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 3000);
+}
+
+// ── SEARCH + FILTER ───────────────────────────────────────────────────────────
+
+document.getElementById("search-input").addEventListener("input", function(e) {
+  searchQuery = e.target.value.toLowerCase();
+  render();
+});
+
+document.getElementById("hero-cats").addEventListener("click", function(e) {
+  var pill = e.target.closest(".hero-cat");
+  if (!pill) return;
+  document.querySelectorAll(".hero-cat").forEach(function(p){ p.classList.remove("active"); });
+  pill.classList.add("active");
+  activeFilter = pill.dataset.cat;
+  render();
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
+render();
+</script>
+</body>
+</html>
