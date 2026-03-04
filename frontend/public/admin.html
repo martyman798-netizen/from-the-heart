@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – From the Heart</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: sans-serif; background: #0f0f0f; color: #eee; padding: 2rem; }
+  h1 { color: #ff6b6b; margin-bottom: 1rem; }
+  h2 { color: #aaa; margin: 1.5rem 0 0.5rem; }
+  input, select, textarea { width: 100%; padding: 0.5rem; margin: 0.3rem 0 0.8rem;
+    background: #1a1a1a; border: 1px solid #333; color: #eee; border-radius: 6px; }
+  button { padding: 0.6rem 1.4rem; background: #ff6b6b; color: white; border: none;
+    border-radius: 6px; cursor: pointer; font-size: 1rem; }
+  button:hover { background: #e05555; }
+  .card { background: #1a1a1a; border-radius: 10px; padding: 1rem; margin-bottom: 0.8rem;
+    display: flex; justify-content: space-between; align-items: center; }
+  .card-name { font-weight: bold; }
+  .card-score { color: #ff6b6b; font-size: 1.2rem; }
+  .btn-delete { background: #333; font-size: 0.8rem; padding: 0.3rem 0.8rem; }
+  .btn-delete:hover { background: #ff6b6b; }
+  #login-screen { max-width: 400px; margin: 4rem auto; background: #1a1a1a; padding: 2rem; border-radius: 12px; }
+  #app { display: none; max-width: 900px; margin: 0 auto; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  #msg { color: #6bffb8; margin: 0.5rem 0; min-height: 1.5rem; }
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <h1>❤️ Admin-panel</h1>
+  <h2>Logg inn</h2>
+  <input type="text" id="username" placeholder="Brukernavn" />
+  <input type="password" id="password" placeholder="Passord" />
+  <button onclick="login()">Logg inn</button>
+  <p id="login-error" style="color:#ff6b6b;margin-top:0.5rem"></p>
+</div>
+
+<div id="app">
+  <h1>❤️ From the Heart – Admin</h1>
+  <button onclick="logout()" style="background:#333;margin-bottom:1rem">Logg ut</button>
+
+  <h2>➕ Legg til / rediger organisasjon</h2>
+  <p id="msg"></p>
+  <div class="grid2">
+    <div>
+      <label>ID</label><input type="number" id="f-id" />
+      <label>Navn</label><input type="text" id="f-name" />
+      <label>Emoji</label><input type="text" id="f-emoji" />
+      <label>Kategori</label>
+      <select id="f-category">
+        <option value="humanitaer">Humanitær</option>
+        <option value="barn">Barn</option>
+        <option value="helse">Helse</option>
+        <option value="miljoe">Miljø</option>
+        <option value="dyr">Dyr</option>
+        <option value="sosial">Sosial</option>
+      </select>
+      <label>Rank i kategori</label><input type="number" id="f-rank" />
+      <label>URL</label><input type="text" id="f-url" />
+    </div>
+    <div>
+      <label>% til formål</label><input type="number" id="f-til_formal" />
+      <label>% admin</label><input type="number" id="f-admin" />
+      <label>Score</label><input type="number" id="f-score" />
+      <label>Åpenhet (A/B/C)</label><input type="text" id="f-openness" maxlength="1" />
+      <label>Innsamlingskontroll?</label>
+      <select id="f-innsamling"><option value="true">Ja</option><option value="false">Nei</option></select>
+      <label>Verdict type</label>
+      <select id="f-verdict_type"><option value="good">good</option><option value="ok">ok</option><option value="bad">bad</option></select>
+    </div>
+  </div>
+  <label>Beskrivelse</label><textarea id="f-description" rows="2"></textarea>
+  <label>Verdict (vurderingstekst)</label><textarea id="f-verdict" rows="3"></textarea>
+  <button onclick="saveOrg()">💾 Lagre organisasjon</button>
+  <button onclick="clearForm()" style="background:#333;margin-left:0.5rem">🗑 Tøm skjema</button>
+
+  <h2>📋 Alle organisasjoner</h2>
+  <div id="org-list">Laster...</div>
+</div>
+
+<script>
+const API = "REPLACE_WITH_YOUR_RAILWAY_URL";
+let authHeader = "";
+
+function login() {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+  authHeader = "Basic " + btoa(u + ":" + p);
+  fetch(API + "/api/organisations", { headers: { Authorization: authHeader } })
+    .then(r => {
+      if (r.ok) {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        loadOrgs();
+      } else {
+        document.getElementById("login-error").textContent = "Feil brukernavn eller passord";
+      }
+    });
+}
+
+function logout() {
+  authHeader = "";
+  document.getElementById("login-screen").style.display = "block";
+  document.getElementById("app").style.display = "none";
+}
+
+function loadOrgs() {
+  fetch(API + "/api/organisations")
+    .then(r => r.json())
+    .then(data => {
+      const list = document.getElementById("org-list");
+      list.innerHTML = data.map(o => `
+        <div class="card">
+          <span class="card-name">${o.emoji} ${o.name} <small style="color:#888">(${o.category})</small></span>
+          <div>
+            <span class="card-score">${o.score}p</span>
+            <button class="btn-delete" onclick="editOrg(${o.id})">✏️ Rediger</button>
+            <button class="btn-delete" onclick="deleteOrg(${o.id})">🗑 Slett</button>
+          </div>
+        </div>`).join("");
+    });
+}
+
+function editOrg(id) {
+  fetch(API + "/api/organisations/" + id)
+    .then(r => r.json())
+    .then(o => {
+      document.getElementById("f-id").value = o.id;
+      document.getElementById("f-name").value = o.name;
+      document.getElementById("f-emoji").value = o.emoji;
+      document.getElementById("f-category").value = o.category;
+      document.getElementById("f-rank").value = o.rank;
+      document.getElementById("f-url").value = o.url;
+      document.getElementById("f-til_formal").value = o.til_formal;
+      document.getElementById("f-admin").value = o.admin;
+      document.getElementById("f-score").value = o.score;
+      document.getElementById("f-openness").value = o.openness;
+      document.getElementById("f-innsamling").value = o.innsamling;
+      document.getElementById("f-verdict_type").value = o.verdict_type;
+      document.getElementById("f-description").value = o.description;
+      document.getElementById("f-verdict").value = o.verdict;
+      window.scrollTo(0, 0);
+    });
+}
+
+function saveOrg() {
+  const id = parseInt(document.getElementById("f-id").value);
+  const body = {
+    id,
+    name: document.getElementById("f-name").value,
+    emoji: document.getElementById("f-emoji").value,
+    category: document.getElementById("f-category").value,
+    rank: parseInt(document.getElementById("f-rank").value),
+    url: document.getElementById("f-url").value,
+    til_formal: parseInt(document.getElementById("f-til_formal").value),
+    admin: parseInt(document.getElementById("f-admin").value),
+    score: parseInt(document.getElementById("f-score").value),
+    openness: document.getElementById("f-openness").value,
+    innsamling: document.getElementById("f-innsamling").value === "true",
+    verdict_type: document.getElementById("f-verdict_type").value,
+    description: document.getElementById("f-description").value,
+    verdict: document.getElementById("f-verdict").value,
+    sources: []
+  };
+
+  fetch(API + "/api/admin/organisations/" + id, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: authHeader },
+    body: JSON.stringify(body)
+  }).then(r => r.ok
+    ? (document.getElementById("msg").textContent = "✅ Lagret!", loadOrgs())
+    : document.getElementById("msg").textContent = "❌ Feil ved lagring"
+  );
+}
+
+function deleteOrg(id) {
+  if (!confirm("Sikker på at du vil slette?")) return;
+  fetch(API + "/api/admin/organisations/" + id, {
+    method: "DELETE",
+    headers: { Authorization: authHeader }
+  }).then(() => loadOrgs());
+}
+
+function clearForm() {
+  ["f-id","f-name","f-emoji","f-rank","f-url","f-til_formal","f-admin","f-score","f-openness","f-description","f-verdict"]
+    .forEach(id => document.getElementById(id).value = "");
+}
+</script>
+</body>
+</html>
