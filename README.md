@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ❤️ From the Heart – Veldedighet Norge
 
 En åpen og uavhengig oversikt over norske veldedighetsorganisasjoner med rangeringer basert på åpenhet, administrasjonskostnader og andel til formål.
@@ -51,3 +52,7 @@ python -m http.server 3000
 - [Gi Effektivt](https://gieffektivt.no)
 - [Skatteetaten – gavefradragsliste](https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/gave-og-arv/gave-til-frivillige-organisasjoner/liste/)
 - Organisasjonenes egne årsrapporter
+=======
+# from-the-heart
+Veldedighetsrangering for Norge
+>>>>>>> 43454f6cffddca712c64853786cd2e43dc8ad301
