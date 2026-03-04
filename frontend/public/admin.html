@@ -88,16 +88,20 @@ function login() {
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
   authHeader = "Basic " + btoa(u + ":" + p);
-  fetch(API + "/api/organisations", { headers: { Authorization: authHeader } })
-    .then(r => {
-      if (r.ok) {
-        document.getElementById("login-screen").style.display = "none";
-        document.getElementById("app").style.display = "block";
-        loadOrgs();
-      } else {
-        document.getElementById("login-error").textContent = "Feil brukernavn eller passord";
-      }
-    });
+  fetch(API + "/api/admin/organisations", {
+    method: "POST",
+    headers: { Authorization: authHeader, "Content-Type": "application/json" },
+    body: JSON.stringify({})
+  }).then(r => {
+    if (r.status === 401) {
+      document.getElementById("login-error").textContent = "Feil brukernavn eller passord";
+      authHeader = "";
+    } else {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      loadOrgs();
+    }
+  });
 }
 
 function logout() {
