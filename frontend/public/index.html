@@ -5,27 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>From the Heart – Veldedighet Norge</title>
   <style>
-    .admin-btn {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 999;
-  padding: 5px 10px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text-muted);
-  font-size: 11px;
-  text-decoration: none;
-  font-family: 'Inter', sans-serif;
-  transition: all .2s;
-}
-.admin-btn:hover {
-  background: rgba(232,99,122,0.15);
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
     :root{
       --bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;
@@ -35,15 +14,15 @@
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-    
-<a href="admin.html" class="admin-btn">⚙️ Admin</a>
-
+    .admin-btn{position:fixed;top:12px;left:12px;z-index:999;padding:5px 10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:11px;text-decoration:none;font-family:'Inter',sans-serif;transition:all .2s;}
+    .admin-btn:hover{background:rgba(232,99,122,0.15);color:var(--accent);border-color:var(--accent);}
     header{background:linear-gradient(160deg,#1a1020 0%,#120d1e 60%,#0f1117 100%);border-bottom:1px solid var(--border);padding:52px 24px 44px;text-align:center;position:relative;overflow:hidden;}
     header::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(232,99,122,.14) 0%,transparent 70%);pointer-events:none;}
     .logo-heart{font-size:50px;line-height:1;filter:drop-shadow(0 0 18px rgba(232,99,122,.65));animation:pulse 2.8s ease-in-out infinite;display:block;margin-bottom:10px;}
     @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
     .logo-text{font-family:'Playfair Display',serif;font-size:clamp(30px,6vw,50px);font-weight:700;background:linear-gradient(90deg,#fff 10%,var(--accent2) 60%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
     .logo-tagline{color:var(--text-muted);font-size:14px;max-width:500px;margin:0 auto 30px;line-height:1.65;}
+
 
     .hero-cats{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;max-width:720px;margin:0 auto;}
     .hero-cat{display:flex;align-items:center;gap:6px;padding:9px 17px;border-radius:50px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-muted);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;}
@@ -158,9 +137,10 @@
     footer{text-align:center;padding:20px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--border);}
     footer a{color:var(--accent);text-decoration:none;}
     @media(max-width:580px){.form-row{grid-template-columns:1fr;}.search-section{flex-direction:column;align-items:stretch;}.bar-right{justify-content:space-between;}}
-  </style>
+   </style>
 </head>
 <body>
+<a href="admin.html" class="admin-btn">⚙️ Admin</a>
 
 <header>
   <span class="logo-heart">&#10084;&#65039;</span>
