@@ -151,17 +151,17 @@ function editOrg(id) {
 }
 
 function saveOrg() {
-  const id = parseInt(document.getElementById("f-id").value);
+  const idVal = document.getElementById("f-id").value;
+  const id = parseInt(idVal);
   const body = {
-    id,
     name: document.getElementById("f-name").value,
     emoji: document.getElementById("f-emoji").value,
     category: document.getElementById("f-category").value,
-    rank: parseInt(document.getElementById("f-rank").value),
+    rank: parseInt(document.getElementById("f-rank").value) || 99,
     url: document.getElementById("f-url").value,
-    til_formal: parseInt(document.getElementById("f-til_formal").value),
-    admin: parseInt(document.getElementById("f-admin").value),
-    score: parseInt(document.getElementById("f-score").value),
+    til_formal: parseInt(document.getElementById("f-til_formal").value) || 0,
+    admin: parseInt(document.getElementById("f-admin").value) || 0,
+    score: parseInt(document.getElementById("f-score").value) || 0,
     openness: document.getElementById("f-openness").value,
     innsamling: document.getElementById("f-innsamling").value === "true",
     verdict_type: document.getElementById("f-verdict_type").value,
@@ -169,6 +169,22 @@ function saveOrg() {
     verdict: document.getElementById("f-verdict").value,
     sources: []
   };
+
+   const isNew = !idVal || isNaN(id);
+  const url = isNew ? API + "/api/admin/organisations" : API + "/api/admin/organisations/" + id;
+  const method = isNew ? "POST" : "PUT";
+  if (!isNew) body.id = id;
+
+  fetch(url, {
+    method: method,
+    headers: { "Content-Type": "application/json", Authorization: authHeader },
+    body: JSON.stringify(body)
+  }).then(r => r.ok
+    ? (document.getElementById("msg").textContent = "✅ Lagret!", loadOrgs(), clearForm())
+    : document.getElementById("msg").textContent = "❌ Feil ved lagring"
+  );
+}
+
 
   fetch(API + "/api/admin/organisations/" + id, {
     method: "PUT",
